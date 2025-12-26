@@ -172,6 +172,10 @@ public function action(): HtmxResponse
 });
 ```
 
+## Examples
+
+The package for Concrete CMS with usage examples can be obtained [here](https://github.com/ktarasov/htmx_example)
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
