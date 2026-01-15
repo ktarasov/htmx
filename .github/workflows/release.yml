@@ -1,0 +1,30 @@
+name: zip file to release artifacts
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove files from list .distignore
+        run: |
+          xargs -a .distignore rm -rf
+
+      - name: Create ZIP
+        run: |
+          mkdir -p ${{ github.event.repository.name }}
+          ls -la
+          shopt -s extglob
+          mv !("${{ github.event.repository.name }}") ${{ github.event.repository.name }}/
+          zip -r ${{ github.event.repository.name }}-${{ github.ref_name }}.zip ${{ github.event.repository.name }}/
+        working-directory: ${{ github.workspace }}
+
+      - name: Upload artifact to release page
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          files: ${{ github.event.repository.name }}-${{ github.ref_name }}.zip
